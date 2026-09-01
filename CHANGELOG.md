@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Collapse repeat runs of a Claude Cowork scheduled task by default: routine runs fold into one representative (labeled with the run count), while runs you engaged with (a human turn beyond the trigger) are kept individually — so a recurring automation doesn't flood the picker or overrun the `sesh ask` filter without hiding the sessions you dug into; disable with `collapse_scheduled: false`
+- Summarize the Claude Cowork scheduled runs you engaged with, instead of labeling each one with the scheduled task's name. Every run of a recurring task is titled by the app with that one name ("Email triage"), so the runs kept out of a collapse group were indistinguishable in the picker and what happened in them was readable only in the transcript. They now get a generated title describing the run itself, which also puts their content into the search corpus and the `sesh ask` filter
 
 ## [2.2.0] - 2026-07-28
 

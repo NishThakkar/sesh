@@ -143,6 +143,15 @@ func (c *ClaudeCowork) ListSessions(ctx context.Context) ([]Session, error) {
 		// Group by scheduled task; keep any run the user actually engaged with
 		// (a human turn beyond the trigger), collapse the pure-automation rest.
 		keep := c.classifyRuns(sessions, schedIDs, paths, cliIDs)
+		for i := range sessions {
+			// A kept run is a real conversation, not a bare automation run — let
+			// it be summarized. Its app title is the generic scheduled-task name
+			// ("Email triage") and doesn't describe what actually happened, so
+			// clearing CuratedTitle lets the summary pass give it a real title.
+			if keep[i] && schedIDs[i] != "" {
+				sessions[i].CuratedTitle = false
+			}
+		}
 		sessions = collapseGroups(sessions,
 			func(i int) string { return schedIDs[i] },
 			func(i int) bool { return keep[i] },
