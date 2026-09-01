@@ -1087,8 +1087,17 @@ func TestClaudeCoworkKeepsInteractiveRuns(t *testing.T) {
 	if strings.Contains(kept.Title, "runs") {
 		t.Errorf("kept run should not be annotated as collapsed: %q", kept.Title)
 	}
+	// The kept run is a real conversation, so it should be summarizable (its
+	// generic app title doesn't describe it); the collapsed representative keeps
+	// its curated app title.
+	if kept.CuratedTitle {
+		t.Errorf("kept interactive run should have CuratedTitle cleared so it gets summarized")
+	}
 	if rep == nil || rep.Title != "Nightly triage (2 runs)" {
 		t.Errorf("expected representative %q, got %+v", "Nightly triage (2 runs)", rep)
+	}
+	if rep != nil && !rep.CuratedTitle {
+		t.Errorf("collapsed representative should keep its curated app title")
 	}
 }
 
